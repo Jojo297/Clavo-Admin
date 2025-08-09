@@ -45,4 +45,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function models()
+    {
+        return $this->hasMany(Model_tflite::class, 'id_user');
+    }
 }
