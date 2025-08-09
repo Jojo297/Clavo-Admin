@@ -20,6 +20,7 @@ import { toast } from 'sonner';
 
 type AddModelForm = {
     fruitType: string;
+    modelName: string;
     model: File | null;
 };
 
@@ -28,6 +29,7 @@ export default function AddModels() {
     const [loading, setLoading] = useState(false);
     const { data, setData, post, processing, errors, reset } = useForm<AddModelForm>({
         fruitType: '',
+        modelName: '',
         model: null,
     });
     const { auth } = usePage<SharedData>().props;
@@ -39,6 +41,7 @@ export default function AddModels() {
         e.preventDefault();
         const formData = new FormData();
         formData.append('fruitType', data.fruitType);
+        formData.append('modelName', data.modelName);
         if (data.model) {
             formData.append('model', data.model);
         }
@@ -54,9 +57,10 @@ export default function AddModels() {
             console.log(result);
 
             if (res.ok) {
-                toast.success('Model Uploaded Successfully');
                 reset('fruitType', 'model');
                 setOpenDialog(false);
+                window.location.reload();
+                toast.success('Model Uploaded Successfully');
             } else {
                 toast.error('Error: ' + result.message);
             }
@@ -77,9 +81,11 @@ export default function AddModels() {
                     <form onSubmit={submit} encType="multipart/form-data">
                         <DialogHeader>
                             <DialogTitle>Add New Model</DialogTitle>
-                            <DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
+                            <DialogDescription className="flex">
+                                Upload model with just extensions <p className="ml-1 text-primary">.tflite</p>
+                            </DialogDescription>
                         </DialogHeader>
-                        <div className="mt-2 grid gap-4">
+                        <div className="mt-4 grid gap-4">
                             <div className="grid gap-3">
                                 <Label htmlFor="fruit-type">Fruit Type</Label>
                                 <Input
@@ -90,6 +96,19 @@ export default function AddModels() {
                                     value={data.fruitType}
                                     onChange={(e) => setData('fruitType', e.target.value)}
                                     placeholder="Input Fruit Type"
+                                />
+                                <InputError message={errors.fruitType} className="mt-2" />
+                            </div>
+                            <div className="grid gap-3">
+                                <Label htmlFor="model-name">Model Name</Label>
+                                <Input
+                                    id="model-name"
+                                    name="modelName"
+                                    required
+                                    autoFocus
+                                    value={data.modelName}
+                                    onChange={(e) => setData('modelName', e.target.value)}
+                                    placeholder="Input Model Name"
                                 />
                                 <InputError message={errors.fruitType} className="mt-2" />
                             </div>
