@@ -13,3 +13,5 @@ Route::get('models-all', [ModelController::class, 'getAllModels'])->name('models
 Route::get('/models', function () {
     return Model_tflite::all();
 });
+
+Route::put('models-update/{id}', [ModelController::class, 'modelsUpdate'])->name('models.update');

@@ -11,6 +11,7 @@ class ModelController extends Controller
     // Upload model from admin
     public function uploadModel(Request $request)
     {
+
         // check file extension
         $ext = $request->file('model')->getClientOriginalExtension();
         if ($ext !== 'tflite') {
@@ -56,5 +57,18 @@ class ModelController extends Controller
         });
 
         return response()->json($models);
+    }
+    public function modelsUpdate(Request $request, $id)
+    {
+        $model = Model_tflite::findOrFail($id);
+
+        // Update model name and fruit type
+        $model->model_name = $request->model_name;
+        $model->fruit_type = $request->fruit_type;
+
+        // save 
+        $model->save();
+
+        return response()->json(['message' => 'Model updated successfully']);
     }
 }

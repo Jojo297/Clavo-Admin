@@ -35,6 +35,7 @@ export default function AddModels() {
     const { auth } = usePage<SharedData>().props;
     const idUser = auth.user.id;
     // console.log(auth.user.id);
+
     const submit: FormEventHandler = async (e) => {
         setLoading(true);
 
