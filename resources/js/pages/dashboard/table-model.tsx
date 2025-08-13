@@ -30,6 +30,7 @@ export default function TableModel() {
     const [models, setModels] = useState<Model[]>([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialogUpdate, setOpenDialogUpdate] = useState(false);
+    const [modelToDelete, setModelToDelete] = useState<Model | null>(null);
     const { data, setData, post, processing, errors, reset } = useForm<Model>({
         id: 0,
         fruit_type: '',
@@ -49,6 +50,16 @@ export default function TableModel() {
     };
 
     // update models
+    const handleDeleteClick = (model: Model) => {
+        setModelToDelete(model);
+        setOpenDialog(true);
+    };
+
+    const handleCloseDeleteDialog = () => {
+        setModelToDelete(null); // Reset state saat dialog ditutup
+        setOpenDialog(false);
+    };
+
     const submitUpdate = async (e: React.FormEvent, id: number) => {
         e.preventDefault();
         setLoading(true);
@@ -128,6 +139,7 @@ export default function TableModel() {
             setLoading(false);
         }
     }, []);
+
     return (
         <div className="mt-4 flex flex-wrap justify-center gap-4">
             {models.map((model) => (
@@ -142,7 +154,6 @@ export default function TableModel() {
                         <Button className="bg-green-500 hover:bg-green-600" onClick={() => window.open(`/storage/${model.path}`)}>
                             Download
                         </Button>
-
                         {/* update model */}
                         <Dialog open={openDialogUpdate} onOpenChange={setOpenDialogUpdate}>
                             <DialogTrigger asChild>
@@ -194,40 +205,45 @@ export default function TableModel() {
                             </DialogContent>
                         </Dialog>
                         {/* end update model */}
-
-                        {/* delete model */}
-                        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                            <DialogTrigger asChild>
-                                <Button className="bg-red-500 hover:bg-red-600">Delete</Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                                <DialogHeader>
-                                    <DialogTitle>Delete Model</DialogTitle>
-                                    <DialogDescription className="flex">
-                                        Are you sure you want to delete this model? This action cannot be undone.
-                                    </DialogDescription>
-                                </DialogHeader>
-
-                                <DialogFooter className="mt-4">
-                                    <DialogClose asChild>
-                                        <Button variant="outline">Cancel</Button>
-                                    </DialogClose>
-                                    <Button
-                                        type="submit"
-                                        disabled={loading}
-                                        className="bg-red-500 hover:bg-red-600"
-                                        onClick={(e) => submitDelete(e, model.id)}
-                                    >
-                                        {loading ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : 'Delete'}
-                                    </Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-
-                        {/* end delete product */}
+                        <Button className="bg-red-500 hover:bg-red-600" onClick={() => handleDeleteClick(model)}>
+                            Delete
+                        </Button>
                     </CardFooter>
                 </Card>
             ))}
+
+            {/* delete model */}
+            <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                <DialogTrigger asChild></DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    {modelToDelete && (
+                        <>
+                            <DialogHeader>
+                                {/* Gunakan data dari state 'modelToDelete' */}
+                                <DialogTitle>Delete Model {modelToDelete.fruit_type}</DialogTitle>
+                                <DialogDescription className="flex">
+                                    Are you sure you want to delete this model? This action cannot be undone.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter className="mt-4">
+                                <Button variant="outline" onClick={handleCloseDeleteDialog}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="bg-red-500 hover:bg-red-600"
+                                    // Gunakan ID dari state 'modelToDelete'
+                                    onClick={(e) => submitDelete(e, modelToDelete.id)}
+                                >
+                                    {loading ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : 'Delete'}
+                                </Button>
+                            </DialogFooter>
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
+            {/* end delete product */}
         </div>
     );
 }
