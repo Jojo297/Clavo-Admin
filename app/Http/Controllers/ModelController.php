@@ -73,4 +73,25 @@ class ModelController extends Controller
 
         return response()->json(['message' => 'Model updated successfully']);
     }
+
+    public function downloadModel($filename)
+    {
+        // dd($filename);
+        $secureFilename = basename($filename);
+
+        // 2. Tentukan path file di dalam gudang (storage/app/models)
+        $filePath = 'models/' . $secureFilename;
+
+        // 3. Periksa apakah file benar-benar ada di storage
+        if (!Storage::disk('local')->exists($filePath)) {
+            // Jika tidak ada, kembalikan error 404 Not Found
+            return response()->json(['error' => 'File not found.'], 404);
+        }
+
+        // 4. Jika file ada dan API Key valid, kirim file untuk diunduh
+        $fullPath = Storage::disk('local')->path($filePath);
+
+        // Gunakan helper response() untuk membuat unduhan
+        return response()->download($fullPath);
+    }
 }

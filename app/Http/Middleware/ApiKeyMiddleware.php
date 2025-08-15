@@ -18,7 +18,7 @@ class ApiKeyMiddleware
 
         $apiKey = $request->header('X-API-KEY');
 
-        $validApiKey = env('MODELS_API_KEY');
+        $validApiKey = env('VITE_MODELS_API_KEY');
         if (!$apiKey || $apiKey !== $validApiKey) {
             return response()->json(['error' => 'Your not allow to access this resource'], 401);
         }

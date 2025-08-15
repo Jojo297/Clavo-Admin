@@ -31,6 +31,8 @@ export default function TableModel() {
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialogUpdate, setOpenDialogUpdate] = useState(false);
     const [modelToDelete, setModelToDelete] = useState<Model | null>(null);
+    const [loadingModelId, setLoadingModelId] = useState<number | null>(null);
+
     const { data, setData, post, processing, errors, reset } = useForm<Model>({
         id: 0,
         fruit_type: '',
@@ -38,7 +40,52 @@ export default function TableModel() {
         path: '',
     });
 
-    // Buka dialog edit
+    // download model
+    const handleDownloadModel = async (e: React.MouseEvent<HTMLButtonElement>, filename: string, id: number) => {
+        setLoadingModelId(id);
+        e.preventDefault();
+
+        console.log('Downloading model:', filename);
+
+        try {
+            const response = await fetch(`/api/models/download/${filename}`, {
+                method: 'GET',
+                headers: {
+                    'X-API-KEY': import.meta.env.VITE_MODELS_API_KEY || '',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Download failed with status: ${response.status}`);
+            }
+
+            const blob = await response.blob();
+
+            const url = window.URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+
+            link.setAttribute('download', filename);
+
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+
+            window.URL.revokeObjectURL(url);
+
+            toast.success('Download completed!', { id: 'download-toast' });
+        } catch (error) {
+            console.error('Download error:', error);
+            toast.error('Download failed. Please try again.');
+        } finally {
+            // PENTING: Kembalikan state ke null setelah selesai (baik berhasil maupun gagal)
+            setLoadingModelId(null);
+        }
+    };
+
+    // open dialog edit
     const handleEdit = (model: Model) => {
         setData({
             id: model.id,
@@ -151,8 +198,12 @@ export default function TableModel() {
                         <CardDescription>{model.model_name}</CardDescription>
                     </CardContent>
                     <CardFooter className="gap-2">
-                        <Button className="bg-green-500 hover:bg-green-600" onClick={() => window.open(`/storage/${model.path}`)}>
-                            Download
+                        <Button
+                            className="bg-green-500 hover:bg-green-600"
+                            disabled={loadingModelId === model.id}
+                            onClick={(e) => handleDownloadModel(e, model.path.split('/').pop() || '', model.id)}
+                        >
+                            {loadingModelId === model.id ? 'Downloading...' : 'Download'}
                         </Button>
                         {/* update model */}
                         <Dialog open={openDialogUpdate} onOpenChange={setOpenDialogUpdate}>

@@ -15,3 +15,6 @@ Route::get('/models', function () {
 });
 
 Route::put('models-update/{id}', [ModelController::class, 'modelsUpdate'])->name('models.update');
+
+Route::get('/models/download/{filename}', [ModelController::class, 'downloadModel'])
+    ->middleware('auth.apikey');
