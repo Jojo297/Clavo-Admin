@@ -8,7 +8,7 @@ Route::post('models/upload', [ModelController::class, 'uploadModel'])->name('mod
 
 Route::delete('models/{id}', [ModelController::class, 'destroy'])->name('models.destroy');
 
-Route::get('models-all', [ModelController::class, 'getAllModels'])->name('models.show');
+Route::get('models-all', action: [ModelController::class, 'getAllModels'])->name('models.show')->middleware('auth.apikey');
 
 Route::get('/models', function () {
     return Model_tflite::all();

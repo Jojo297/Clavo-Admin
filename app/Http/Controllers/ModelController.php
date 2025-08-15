@@ -40,6 +40,8 @@ class ModelController extends Controller
         $model = Model_tflite::findOrFail($id);
 
         // Hapus file fisiknya
+
+        // $ddd(Storage::exists($model->path));
         if (Storage::exists($model->path)) {
             Storage::delete($model->path);
         }
