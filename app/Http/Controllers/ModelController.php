@@ -18,9 +18,9 @@ class ModelController extends Controller
             return response()->json(['error' => 'File must be .tflite'], 422);
         }
 
-        // Simpan file ke storage/app/models
+        // save file to storage/app/private/models
         $fileName = time() . '_' . $request->file('model')->getClientOriginalName();
-        $path = $request->file('model')->storeAs('models', $fileName, 'public');
+        $path = $request->file('model')->storeAs('models', $fileName, 'local');
 
         // Simpan data ke database
         $model = Model_tflite::create([
@@ -41,12 +41,10 @@ class ModelController extends Controller
 
         // Hapus file fisiknya
 
-        // $ddd(Storage::exists($model->path));
-        if (Storage::exists($model->path)) {
-            Storage::delete($model->path);
+        if (Storage::disk("local")->exists($model->path)) {
+            Storage::disk("local")->delete($model->path);
         }
 
-        // Hapus data di database
         $model->delete();
 
         return response()->json(['message' => 'Model deleted successfully']);
@@ -79,16 +77,12 @@ class ModelController extends Controller
         // dd($filename);
         $secureFilename = basename($filename);
 
-        // 2. Tentukan path file di dalam gudang (storage/app/models)
         $filePath = 'models/' . $secureFilename;
 
-        // 3. Periksa apakah file benar-benar ada di storage
         if (!Storage::disk('local')->exists($filePath)) {
-            // Jika tidak ada, kembalikan error 404 Not Found
             return response()->json(['error' => 'File not found.'], 404);
         }
 
-        // 4. Jika file ada dan API Key valid, kirim file untuk diunduh
         $fullPath = Storage::disk('local')->path($filePath);
 
         // Gunakan helper response() untuk membuat unduhan

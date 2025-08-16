@@ -13,8 +13,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 // import { InputError } from '@/components/ui/input-error';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useForm } from '@inertiajs/react';
-import { LoaderCircleIcon } from 'lucide-react';
+import { AlertCircleIcon, LoaderCircleIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -189,79 +190,87 @@ export default function TableModel() {
 
     return (
         <div className="mt-4 flex flex-wrap justify-center gap-4">
-            {models.map((model) => (
-                <Card key={model.id} className="max-w-sm">
-                    <CardHeader>
-                        <CardTitle>{model.fruit_type}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CardDescription>{model.model_name}</CardDescription>
-                    </CardContent>
-                    <CardFooter className="gap-2">
-                        <Button
-                            className="bg-green-500 hover:bg-green-600"
-                            disabled={loadingModelId === model.id}
-                            onClick={(e) => handleDownloadModel(e, model.path.split('/').pop() || '', model.id)}
-                        >
-                            {loadingModelId === model.id ? 'Downloading...' : 'Download'}
-                        </Button>
-                        {/* update model */}
-                        <Dialog open={openDialogUpdate} onOpenChange={setOpenDialogUpdate}>
-                            <DialogTrigger asChild>
-                                <Button className="bg-blue-500 hover:bg-blue-600" onClick={() => handleEdit(model)}>
-                                    Edit
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                                <form onSubmit={(e) => submitUpdate(e, model.id)} encType="multipart/form-data">
-                                    <DialogHeader>
-                                        <DialogTitle>Update Model {model.fruit_type}</DialogTitle>
-                                        <DialogDescription className="flex">you can update the model details here</DialogDescription>
-                                    </DialogHeader>
-                                    <div className="mt-4 grid gap-4">
-                                        <div className="grid gap-3">
-                                            <Label htmlFor="fruit-type">Fruit Type</Label>
-                                            <Input
-                                                id="fruit-type"
-                                                name="fruitType"
-                                                required
-                                                autoFocus
-                                                value={data.fruit_type}
-                                                onChange={(e) => setData('fruit_type', e.target.value)}
-                                                placeholder="Input Fruit Type"
-                                            />
+            {models && models.length > 0 ? (
+                models.map((model) => (
+                    <Card key={model.id} className="max-w-sm">
+                        <CardHeader>
+                            <CardTitle>{model.fruit_type}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <CardDescription>{model.model_name}</CardDescription>
+                        </CardContent>
+                        <CardFooter className="gap-2">
+                            <Button
+                                className="bg-green-500 hover:bg-green-600"
+                                disabled={loadingModelId === model.id}
+                                onClick={(e) => handleDownloadModel(e, model.path.split('/').pop() || '', model.id)}
+                            >
+                                {loadingModelId === model.id ? 'Downloading...' : 'Download'}
+                            </Button>
+                            {/* update model */}
+                            <Dialog open={openDialogUpdate} onOpenChange={setOpenDialogUpdate}>
+                                <DialogTrigger asChild>
+                                    <Button className="bg-blue-500 hover:bg-blue-600" onClick={() => handleEdit(model)}>
+                                        Edit
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[425px]">
+                                    <form onSubmit={(e) => submitUpdate(e, model.id)} encType="multipart/form-data">
+                                        <DialogHeader>
+                                            <DialogTitle>Update Model {model.fruit_type}</DialogTitle>
+                                            <DialogDescription className="flex">you can update the model details here</DialogDescription>
+                                        </DialogHeader>
+                                        <div className="mt-4 grid gap-4">
+                                            <div className="grid gap-3">
+                                                <Label htmlFor="fruit-type">Fruit Type</Label>
+                                                <Input
+                                                    id="fruit-type"
+                                                    name="fruitType"
+                                                    required
+                                                    autoFocus
+                                                    value={data.fruit_type}
+                                                    onChange={(e) => setData('fruit_type', e.target.value)}
+                                                    placeholder="Input Fruit Type"
+                                                />
+                                            </div>
+                                            <div className="grid gap-3">
+                                                <Label htmlFor="model-name">Model Name</Label>
+                                                <Input
+                                                    id="model-name"
+                                                    name="modelName"
+                                                    required
+                                                    autoFocus
+                                                    value={data.model_name}
+                                                    onChange={(e) => setData('model_name', e.target.value)}
+                                                    placeholder="Input Model Name"
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="grid gap-3">
-                                            <Label htmlFor="model-name">Model Name</Label>
-                                            <Input
-                                                id="model-name"
-                                                name="modelName"
-                                                required
-                                                autoFocus
-                                                value={data.model_name}
-                                                onChange={(e) => setData('model_name', e.target.value)}
-                                                placeholder="Input Model Name"
-                                            />
-                                        </div>
-                                    </div>
-                                    <DialogFooter className="mt-4">
-                                        <DialogClose asChild>
-                                            <Button variant="outline">Cancel</Button>
-                                        </DialogClose>
-                                        <Button type="submit" disabled={loading}>
-                                            {loading ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : 'Save'}
-                                        </Button>
-                                    </DialogFooter>
-                                </form>
-                            </DialogContent>
-                        </Dialog>
-                        {/* end update model */}
-                        <Button className="bg-red-500 hover:bg-red-600" onClick={() => handleDeleteClick(model)}>
-                            Delete
-                        </Button>
-                    </CardFooter>
-                </Card>
-            ))}
+                                        <DialogFooter className="mt-4">
+                                            <DialogClose asChild>
+                                                <Button variant="outline">Cancel</Button>
+                                            </DialogClose>
+                                            <Button type="submit" disabled={loading}>
+                                                {loading ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : 'Save'}
+                                            </Button>
+                                        </DialogFooter>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+                            {/* end update model */}
+                            <Button className="bg-red-500 hover:bg-red-600" onClick={() => handleDeleteClick(model)}>
+                                Delete
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                ))
+            ) : (
+                <Alert className="my-40 w-lg">
+                    <AlertCircleIcon />
+                    <AlertTitle>Models not found</AlertTitle>
+                    <AlertDescription>add new models, click Add New Model in top right </AlertDescription>
+                </Alert>
+            )}
 
             {/* delete model */}
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
