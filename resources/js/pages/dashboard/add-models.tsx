@@ -1,4 +1,3 @@
-import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -14,19 +13,32 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { SharedData } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, Search } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
 import { toast } from 'sonner';
 
-type AddModelForm = {
+interface AddModelsProps {
+    initialModels: ModelSearch[];
+    onSearch: (searchTerm: string) => void;
+}
+
+interface AddModelForm {
     fruitType: string;
     modelName: string;
     model: File | null;
-};
 
-export default function AddModels() {
+    [key: string]: string | File | null;
+}
+interface ModelSearch {
+    fruit_type: string | null;
+    model_name: string;
+}
+
+export default function AddModels({ onSearch }: AddModelsProps) {
     const [openDialog, setOpenDialog] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [searchItem, setSearchItem] = useState('');
+
     const { data, setData, post, processing, errors, reset } = useForm<AddModelForm>({
         fruitType: '',
         modelName: '',
@@ -34,7 +46,6 @@ export default function AddModels() {
     });
     const { auth } = usePage<SharedData>().props;
     const idUser = auth.user.id;
-    // console.log(auth.user.id);
 
     const submit: FormEventHandler = async (e) => {
         setLoading(true);
@@ -58,7 +69,7 @@ export default function AddModels() {
             console.log(result);
 
             if (res.ok) {
-                reset('fruitType', 'model');
+                reset();
                 setOpenDialog(false);
                 window.location.reload();
                 toast.success('Model Uploaded Successfully');
@@ -72,8 +83,19 @@ export default function AddModels() {
         }
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = e.target.value;
+        setSearchItem(searchTerm);
+
+        // Panggil fungsi dari Dashboard untuk melakukan filter dan update state global
+        onSearch(searchTerm);
+    };
     return (
-        <div>
+        <div className="flex gap-4">
+            <div className="relative flex items-stretch">
+                <Search className="absolute top-2 ml-2 h-5 w-5 transform text-gray-400" />
+                <Input className="pl-10" placeholder="Search Models" value={searchItem} onChange={handleInputChange} />
+            </div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
                     <Button className="">Add New Model</Button>
@@ -95,10 +117,15 @@ export default function AddModels() {
                                     required
                                     autoFocus
                                     value={data.fruitType}
-                                    onChange={(e) => setData('fruitType', e.target.value)}
+                                    onChange={(e) =>
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            fruitType: e.target.value,
+                                        }))
+                                    }
                                     placeholder="Input Fruit Type"
                                 />
-                                <InputError message={errors.fruitType} className="mt-2" />
+                                {/* <InputError message={errors.fruitType as (string | undefined)} className="mt-2" /> */}
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="model-name">Model Name</Label>
@@ -108,10 +135,15 @@ export default function AddModels() {
                                     required
                                     autoFocus
                                     value={data.modelName}
-                                    onChange={(e) => setData('modelName', e.target.value)}
+                                    onChange={(e) =>
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            modelName: e.target.value,
+                                        }))
+                                    }
                                     placeholder="Input Model Name"
                                 />
-                                <InputError message={errors.fruitType} className="mt-2" />
+                                {/* <InputError message={errors.fruitType} className="mt-2" /> */}
                             </div>
                             <div className="grid gap-3">
                                 <Label htmlFor="model">Upload Model</Label>
@@ -121,9 +153,15 @@ export default function AddModels() {
                                     autoFocus
                                     name="model"
                                     type="file"
-                                    onChange={(e) => setData('model', e.target.files ? e.target.files[0] : null)}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            model: e.target.files ? e.target.files[0] : null,
+                                        }))
+                                    }
                                 />
-                                <InputError message={errors.model} className="mt-2" />
+                                <DialogDescription className="flex">Upload file name "FruitName_ModelName"</DialogDescription>
+                                {/* <InputError message={errors.model} className="mt-2" /> */}
                             </div>
                         </div>
                         <DialogFooter className="mt-4">

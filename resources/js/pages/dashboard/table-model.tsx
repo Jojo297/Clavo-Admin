@@ -16,8 +16,12 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useForm } from '@inertiajs/react';
 import { AlertCircleIcon, LoaderCircleIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+
+interface AddModelsProps {
+    initialModels: Model[];
+}
 
 type Model = {
     id: number;
@@ -26,9 +30,9 @@ type Model = {
     path: string;
 };
 
-export default function TableModel() {
+export default function TableModel({ initialModels }: AddModelsProps) {
     const [loading, setLoading] = useState(false);
-    const [models, setModels] = useState<Model[]>([]);
+    const [models, setModels] = useState<Model[]>(initialModels);
     const [openDialog, setOpenDialog] = useState(false);
     const [openDialogUpdate, setOpenDialogUpdate] = useState(false);
     const [modelToDelete, setModelToDelete] = useState<Model | null>(null);
@@ -169,24 +173,10 @@ export default function TableModel() {
         }
     };
 
-    // fetch models
-    useMemo(() => {
-        // Fetch models from API
-        try {
-            setLoading(true);
-            fetch('http://localhost:8000/api/models')
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    setModels(data);
-                });
-        } catch (error) {
-            console.log(error);
-            toast.error('Failed to fetch models');
-        } finally {
-            setLoading(false);
-        }
-    }, []);
+    // data synchronization
+    useEffect(() => {
+        setModels(initialModels);
+    }, [initialModels]);
 
     return (
         <div className="mt-4 flex flex-wrap justify-center gap-4">

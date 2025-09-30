@@ -21,6 +21,11 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    // {
+    //     title: 'Training Model',
+    //     href: '/training',
+    //     icon: Dumbbell,
+    // },
 ];
 
 const rightNavItems: NavItem[] = [
