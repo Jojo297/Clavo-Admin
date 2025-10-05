@@ -4,7 +4,7 @@ import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { HeroSection } from '@/components/hero-section';
 import { StatsSection } from '@/components/stats-section';
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 
 type SectionName = 'Hero' | 'Feature' | 'AppShowcase';
 
@@ -17,11 +17,14 @@ export default function Welcome() {
     const FeaturesPage = useRef<HTMLElement>(null);
     const AppShowcasePage = useRef<HTMLElement>(null);
 
-    const sectionRefs = {
-        Hero: HeroPage,
-        Feature: FeaturesPage,
-        AppShowcase: AppShowcasePage,
-    };
+    const sectionRefs = useMemo(
+        () => ({
+            Hero: HeroPage,
+            Feature: FeaturesPage,
+            AppShowcase: AppShowcasePage,
+        }),
+        [HeroPage, FeaturesPage, AppShowcasePage],
+    );
 
     const handleScrollToSection = useCallback(
         (sectionName: SectionName) => {
