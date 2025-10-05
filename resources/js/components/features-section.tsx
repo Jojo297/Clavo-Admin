@@ -60,7 +60,7 @@ export function FeaturesSection() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-4">
                                 <div className="rounded-2xl p-6"></div>
-                                <Card className="max-w-sm shadow-lg">
+                                <Card className="max-w-sm border-0 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:border-1 hover:shadow-lg">
                                     <CardHeader className="flex items-stretch gap-3">
                                         <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path
@@ -80,7 +80,7 @@ export function FeaturesSection() {
                                     <CardFooter className="gap-2"></CardFooter>
                                 </Card>
 
-                                <Card className="max-w-sm shadow-lg">
+                                <Card className="max-w-sm border-0 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:border-1 hover:shadow-lg">
                                     <CardHeader className="flex items-stretch gap-3">
                                         <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path
@@ -102,7 +102,7 @@ export function FeaturesSection() {
                             </div>
 
                             <div className="mt-8 space-y-4">
-                                <Card className="max-w-sm shadow-lg">
+                                <Card className="max-w-sm border-0 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:border-1 hover:shadow-lg">
                                     <CardHeader className="flex items-stretch gap-3">
                                         <svg className="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -117,7 +117,7 @@ export function FeaturesSection() {
                                     <CardFooter className="gap-2"></CardFooter>
                                 </Card>
 
-                                <Card className="max-w-sm shadow-lg">
+                                <Card className="max-w-sm border-0 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:border-1 hover:shadow-lg">
                                     <CardHeader className="flex items-stretch gap-3">
                                         <svg className="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path

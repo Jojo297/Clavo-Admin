@@ -11,7 +11,6 @@ class ModelController extends Controller
     // Upload model from admin
     public function uploadModel(Request $request)
     {
-
         // check file extension
         $ext = $request->file('model')->getClientOriginalExtension();
         if ($ext !== 'tflite') {

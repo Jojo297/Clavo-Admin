@@ -37,7 +37,6 @@ export default function Dashboard() {
     const handleSearch = (searchTerm: string) => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
 
-        // Filter dilakukan pada data master (ModelsSearch)
         const results = Models.filter(
             (model) =>
                 (model.fruit_type ?? '').toLowerCase().includes(lowerCaseSearchTerm) ||
@@ -52,7 +51,7 @@ export default function Dashboard() {
         // Fetch models from API
         try {
             // setLoading(true);
-            fetch('http://localhost:8000/api/models')
+            fetch('/api/models')
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data);

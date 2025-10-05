@@ -1,3 +1,5 @@
+import Clavologo from './../../../public/CLAVO-bgremove.png';
+
 export function Footer() {
     return (
         <footer className="px-4 py-12">
@@ -5,8 +7,10 @@ export function Footer() {
                 <div className="grid gap-8 md:grid-cols-4">
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
-                                <span className="text-sm font-bold text-primary-foreground">C</span>
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+                                <span className="text-lg font-bold text-primary-foreground">
+                                    <img src={Clavologo} alt="" />
+                                </span>
                             </div>
                             <span className="text-lg font-bold">Clavo</span>
                         </div>
@@ -19,22 +23,22 @@ export function Footer() {
                         <h4 className="mb-4 font-semibold">Product</h4>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Features
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Pricing
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     API
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Documentation
                                 </a>
                             </li>
@@ -45,22 +49,22 @@ export function Footer() {
                         <h4 className="mb-4 font-semibold">Company</h4>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     About
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Blog
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Careers
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Contact
                                 </a>
                             </li>
@@ -71,22 +75,22 @@ export function Footer() {
                         <h4 className="mb-4 font-semibold">Support</h4>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Help Center
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Privacy Policy
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Terms of Service
                                 </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-background">
+                                <a href="#" className="">
                                     Status
                                 </a>
                             </li>

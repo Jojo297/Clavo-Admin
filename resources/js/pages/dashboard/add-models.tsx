@@ -29,6 +29,8 @@ interface AddModelForm {
 
     [key: string]: string | File | null;
 }
+
+// interface for search fruite name and model name
 interface ModelSearch {
     fruit_type: string | null;
     model_name: string;
@@ -60,7 +62,7 @@ export default function AddModels({ onSearch }: AddModelsProps) {
         formData.append('id_user', idUser.toString());
 
         try {
-            const res = await fetch('http://localhost:8000/api/models/upload', {
+            const res = await fetch('/api/models/upload', {
                 method: 'POST',
                 body: formData,
             });
@@ -87,18 +89,18 @@ export default function AddModels({ onSearch }: AddModelsProps) {
         const searchTerm = e.target.value;
         setSearchItem(searchTerm);
 
-        // Panggil fungsi dari Dashboard untuk melakukan filter dan update state global
+        // call function from dashboard for filter and update state global
         onSearch(searchTerm);
     };
     return (
-        <div className="flex gap-4">
-            <div className="relative flex items-stretch">
+        <div className="flex">
+            <div className="relative flex items-stretch pr-2 pl-2">
                 <Search className="absolute top-2 ml-2 h-5 w-5 transform text-gray-400" />
-                <Input className="pl-10" placeholder="Search Models" value={searchItem} onChange={handleInputChange} />
+                <Input className="pl-10 text-[12px]" placeholder="Search Models" value={searchItem} onChange={handleInputChange} />
             </div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
-                    <Button className="">Add New Model</Button>
+                    <Button className="px-2 py-1 text-[12px]">Add New Model</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <form onSubmit={submit} encType="multipart/form-data">

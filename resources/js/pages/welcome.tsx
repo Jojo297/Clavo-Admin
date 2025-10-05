@@ -6,19 +6,53 @@ import { HeroSection } from '@/components/hero-section';
 import { StatsSection } from '@/components/stats-section';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
+import { RefObject, useCallback, useRef } from 'react';
+
+type SectionName = 'Hero' | 'Feature' | 'AppShowcase';
+
+type SectionRefs = Record<SectionName, RefObject<HTMLElement>>;
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
 
+    const HeroPage = useRef<HTMLElement>(null);
+    const FeaturesPage = useRef<HTMLElement>(null);
+    const AppShowcasePage = useRef<HTMLElement>(null);
+
+    const sectionRefs = {
+        Hero: HeroPage,
+        Feature: FeaturesPage,
+        AppShowcase: AppShowcasePage,
+    };
+
+    const handleScrollToSection = useCallback(
+        (sectionName: SectionName) => {
+            const ref = sectionRefs[sectionName];
+            if (ref && ref.current) {
+                ref.current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                });
+            }
+        },
+        [sectionRefs],
+    );
+
     return (
         <>
             <div className="min-h-screen">
-                <Header />
+                <Header onScroll={handleScrollToSection} />
                 <main>
-                    <HeroSection />
+                    <section ref={HeroPage}>
+                        <HeroSection />
+                    </section>
                     <StatsSection />
-                    <FeaturesSection />
-                    <AppShowcaseSection />
+                    <section ref={FeaturesPage}>
+                        <FeaturesSection />
+                    </section>
+                    <section ref={AppShowcasePage}>
+                        <AppShowcaseSection />
+                    </section>
                 </main>
                 <Footer />
             </div>

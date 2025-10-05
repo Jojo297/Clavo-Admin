@@ -19,15 +19,15 @@ export function AppShowcaseSection() {
                             <div className="space-y-6">
                                 <div className="flex items-center space-x-3">
                                     <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                                    <span className="text-sm text-muted-foreground">Visit enim nibh ut fugiat nulla pariatur</span>
+                                    <span className="text-sm text-muted-foreground">Real Time Detection</span>
                                 </div>
                                 <div className="flex items-center space-x-3">
                                     <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                                    <span className="text-sm text-muted-foreground">Refreshing to get such a personal touch</span>
+                                    <span className="text-sm text-muted-foreground">Offline Detection Mode</span>
                                 </div>
                                 <div className="flex items-center space-x-3">
                                     <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                                    <span className="text-sm text-muted-foreground">Duis aute irure dolor in reprehenderit in volup</span>
+                                    <span className="text-sm text-muted-foreground">Easy Installation Process</span>
                                 </div>
                             </div>
 
@@ -47,17 +47,7 @@ export function AppShowcaseSection() {
 
                             <div className="space-y-6">
                                 <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">Download App</Button>
-                                <div className="flex items-center space-x-2">
-                                    <svg className="h-5 w-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h1m4 0h1m6-10V7a3 3 0 00-3-3H6a3 3 0 00-3 3v1"
-                                        />
-                                    </svg>
-                                    <span className="text-sm text-muted-foreground">Video Tutorial</span>
-                                </div>
+                                <div className="flex items-center space-x-2"></div>
                             </div>
                         </div>
                     </div>

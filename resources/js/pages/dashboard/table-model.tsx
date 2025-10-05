@@ -121,7 +121,7 @@ export default function TableModel({ initialModels }: AddModelsProps) {
         formData.append('modelName', data.model_name);
 
         try {
-            const response = await fetch(`http://localhost:8000/api/models-update/${id}`, {
+            const response = await fetch(`/api/models-update/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ export default function TableModel({ initialModels }: AddModelsProps) {
         setLoading(true);
 
         try {
-            const response = await fetch(`http://localhost:8000/api/models/${id}`, {
+            const response = await fetch(`/api/models/${id}`, {
                 method: 'DELETE',
             });
 
