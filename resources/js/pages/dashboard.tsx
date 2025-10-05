@@ -32,7 +32,7 @@ export default function Dashboard() {
     useEffect(() => {
         // initialization filteredModels
         setFilteredModels(Models);
-    }, [ModelsSearch]);
+    }, [ModelsSearch, Models]);
 
     const handleSearch = (searchTerm: string) => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();

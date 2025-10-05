@@ -39,7 +39,7 @@ export default function AddModels({ onSearch }: AddModelsProps) {
     const [loading, setLoading] = useState(false);
     const [searchItem, setSearchItem] = useState('');
 
-    const { data, setData, post, processing, errors, reset } = useForm<AddModelForm>({
+    const { data, setData, reset } = useForm<AddModelForm>({
         fruitType: '',
         modelName: '',
         model: null,
@@ -98,14 +98,14 @@ export default function AddModels({ onSearch }: AddModelsProps) {
         onSearch(searchTerm);
     };
     return (
-        <div className="flex gap-4">
-            <div className="relative flex items-stretch">
+        <div className="flex">
+            <div className="relative flex items-stretch pr-2 pl-2">
                 <Search className="absolute top-2 ml-2 h-5 w-5 transform text-gray-400" />
-                <Input className="pl-10" placeholder="Search Models" value={searchItem} onChange={handleInputChange} />
+                <Input className="pl-10 text-[12px]" placeholder="Search Models" value={searchItem} onChange={handleInputChange} />
             </div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
-                    <Button className="">Add New Model</Button>
+                    <Button className="px-2 py-1 text-[12px] lg:text-sm">Add New Model</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <form onSubmit={submit} encType="multipart/form-data">

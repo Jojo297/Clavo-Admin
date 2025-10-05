@@ -38,7 +38,7 @@ export default function TableModel({ initialModels }: AddModelsProps) {
     const [modelToDelete, setModelToDelete] = useState<Model | null>(null);
     const [loadingModelId, setLoadingModelId] = useState<number | null>(null);
 
-    const { data, setData, post, processing, errors, reset } = useForm<Model>({
+    const { data, setData } = useForm<Model>({
         id: 0,
         fruit_type: '',
         model_name: '',
