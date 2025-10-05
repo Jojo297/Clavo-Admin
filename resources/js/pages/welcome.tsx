@@ -4,16 +4,14 @@ import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { HeroSection } from '@/components/hero-section';
 import { StatsSection } from '@/components/stats-section';
-import { type SharedData } from '@/types';
-import { usePage } from '@inertiajs/react';
-import { RefObject, useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 type SectionName = 'Hero' | 'Feature' | 'AppShowcase';
 
-type SectionRefs = Record<SectionName, RefObject<HTMLElement>>;
+// type SectionRefs = Record<SectionName, RefObject<HTMLElement>>;
 
 export default function Welcome() {
-    const { auth } = usePage<SharedData>().props;
+    // const { auth } = usePage<SharedData>().props;
 
     const HeroPage = useRef<HTMLElement>(null);
     const FeaturesPage = useRef<HTMLElement>(null);
