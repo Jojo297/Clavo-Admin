@@ -11,6 +11,14 @@ class ModelController extends Controller
     // Upload model from admin
     public function uploadModel(Request $request)
     {
+
+        $request->validate([
+            'fruitType' => 'required|string|max:255',
+            'modelName' => 'required|string|max:255',
+            // 'model'     => 'required|file|mimes:tflite', // Pastikan file ada dan ekstensinya .tflite
+            'user_id'   => 'required|integer',
+        ]);
+
         // check file extension
         $ext = $request->file('model')->getClientOriginalExtension();
         if ($ext !== 'tflite') {
@@ -26,13 +34,13 @@ class ModelController extends Controller
             'model_name' => $request->modelName,
             'fruit_type' => $request->fruitType,
             'path'       => $path,
-            'id_user'    => $request->id_user,
+            'user_id'    => (int) $request->user_id,
         ]);
 
         return response()->json([
             'message' => 'Model uploaded successfully',
             'path' => $path
-        ]);
+        ], 201);
     }
     public function destroy($id)
     {

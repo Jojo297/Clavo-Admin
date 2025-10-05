@@ -37,6 +37,7 @@ export default function Dashboard() {
     const handleSearch = (searchTerm: string) => {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
 
+        // Filter dilakukan pada data master (ModelsSearch)
         const results = Models.filter(
             (model) =>
                 (model.fruit_type ?? '').toLowerCase().includes(lowerCaseSearchTerm) ||

@@ -29,8 +29,6 @@ interface AddModelForm {
 
     [key: string]: string | File | null;
 }
-
-// interface for search fruite name and model name
 interface ModelSearch {
     fruit_type: string | null;
     model_name: string;
@@ -51,35 +49,42 @@ export default function AddModels({ onSearch }: AddModelsProps) {
 
     const submit: FormEventHandler = async (e) => {
         setLoading(true);
-
         e.preventDefault();
+
         const formData = new FormData();
         formData.append('fruitType', data.fruitType);
         formData.append('modelName', data.modelName);
         if (data.model) {
             formData.append('model', data.model);
         }
-        formData.append('id_user', idUser.toString());
+        formData.append('user_id', idUser.toString());
 
         try {
             const res = await fetch('/api/models/upload', {
                 method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                },
                 body: formData,
             });
 
-            const result = await res.json();
-            console.log(result);
-
             if (res.ok) {
+                const result = await res.json();
+                console.log('Success:', result);
+
                 reset();
                 setOpenDialog(false);
                 window.location.reload();
                 toast.success('Model Uploaded Successfully');
             } else {
-                toast.error('Error: ' + result.message);
+                const errorText = await res.text();
+                console.error('Server Error Response:', errorText);
+                toast.error('Failed to upload model. See console for details.');
             }
         } catch (err) {
-            console.error(err);
+            // This will catch network errors or other unexpected issues
+            console.error('Fetch Error:', err);
+            toast.error('An unexpected error occurred.');
         } finally {
             setLoading(false);
         }
@@ -89,18 +94,18 @@ export default function AddModels({ onSearch }: AddModelsProps) {
         const searchTerm = e.target.value;
         setSearchItem(searchTerm);
 
-        // call function from dashboard for filter and update state global
+        // Panggil fungsi dari Dashboard untuk melakukan filter dan update state global
         onSearch(searchTerm);
     };
     return (
-        <div className="flex">
-            <div className="relative flex items-stretch pr-2 pl-2">
+        <div className="flex gap-4">
+            <div className="relative flex items-stretch">
                 <Search className="absolute top-2 ml-2 h-5 w-5 transform text-gray-400" />
-                <Input className="pl-10 text-[12px]" placeholder="Search Models" value={searchItem} onChange={handleInputChange} />
+                <Input className="pl-10" placeholder="Search Models" value={searchItem} onChange={handleInputChange} />
             </div>
             <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                 <DialogTrigger asChild>
-                    <Button className="px-2 py-1 text-[12px]">Add New Model</Button>
+                    <Button className="">Add New Model</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                     <form onSubmit={submit} encType="multipart/form-data">

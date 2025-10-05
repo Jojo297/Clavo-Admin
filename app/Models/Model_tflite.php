@@ -10,11 +10,11 @@ class Model_tflite extends Model
         'model_name',
         'fruit_type',
         'path',
-        'id_user'
+        'user_id'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
